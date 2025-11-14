@@ -1,0 +1,33 @@
+from Quantunn_Gate.game_components.memorias import *
+
+class Personagem:
+    def __init__(self):
+        self.vida = 100
+        self.item = []
+
+    def dano(self, i=1):
+        self.vida -= 20 * i
+        if self.vida < 0:
+            self.vida = 0
+        return self.vida
+
+    def recuperar(self, i=1):
+        self.vida += 20 * i
+        if self.vida > 100:
+            self.vida = 100
+        return self.vida
+
+    def guardar_items(self, item):
+        self.item.append(item)
+
+    def lembrar(self,i=0):
+        if i in range(len(memories)):
+           self.show(i)
+    
+    def show(self,i=0): 
+            return memories[i]
+
+    def mostrar_items(self, item=None):
+        if item:
+            return item if item in self.item else "Nada"
+        return ", ".join(self.item) if self.item else "Nada"
