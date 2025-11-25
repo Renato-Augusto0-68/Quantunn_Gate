@@ -1,4 +1,4 @@
-from Quantunn_Gate.game_components.memorias import *
+from memorias import *
 
 class Personagem:
     def __init__(self):

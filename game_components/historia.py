@@ -20,7 +20,7 @@ def ficar(i):
     return p2[i]
 
 
-def e2(i):
+def p2_4(i):
     p3=["Você pega o violão",
         "E começa a tocar a única música que sabe, e a que mais dói... Porque te faz lembrar de alguém: Riders on The Storm, de The Doors. No segundo refrão, você ouve um barulho gigantesco, como algo se movendo, enquanto os ruídos do duto parecem se aproximar. Você guarda o violão assim que ouve os barulhos."]
     return p3[i]
@@ -47,8 +47,13 @@ def sf(i):
         "..."]
     return p5[i]
 
-class historia:
-   def Finald(self):
+class livro_decisoes:
+   def p2_4(i):
+    p3=["Você pega o violão",
+        "E começa a tocar a única música que sabe, e a que mais dói... Porque te faz lembrar de alguém: Riders on The Storm, de The Doors. No segundo refrão, você ouve um barulho gigantesco, como algo se movendo, enquanto os ruídos do duto parecem se aproximar. Você guarda o violão assim que ouve os barulhos."]
+    return p3[i]
+   
+   def p(self):
         self.pf=[
             f"Fora de lá, você anda e encontra uma outra propaganda. Nela, está sendo dito sobre a criação da Crispr-CAS9. Você lê a matéria e percebe algo aterrador... ",
             "Ao lado da matéria, há uma propaganda, com uma foto do Mazelinha falando 'Que mazela!' ",

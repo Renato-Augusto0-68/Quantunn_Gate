@@ -2,8 +2,8 @@
 import pygame
 import sys, time
 import random as r
-from Quantunn_Gate.game_components.historia import historia
-from Quantunn_Gate.game_components.personagem import Personagem
+from historia import livro_decisoes
+from personagem import Personagem
 # --- CONFIG INICIAL ---
 pygame.init()
 WIDTH, HEIGHT = 900, 700
@@ -21,7 +21,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 player = Personagem()
-h=historia()
+h=livro_decisoes()
 
 # --- FUNÇÕES ---
 def draw_text(surface, text, pos, font, color=WHITE, max_width=850):
@@ -163,7 +163,7 @@ def events():
 
 #   INÍCIO DO JOGO
 
-from Quantunn_Gate.game_components.historia import Finald,ficar,sf,atencao,roubar,e2
+from historia import livro_decisoes,Finald,ficar,sf,atencao,roubar,p2_4
 
 intro = (
     f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. "
@@ -185,7 +185,7 @@ elif escolha == "esquerda":
             {"text": "Tentar arrombar a porta", "action": "arrombar"}])
     if escolha2 == "violao":
         for i in range(2):
-            show_text_block(e2(i))        
+            show_text_block(p2_4(i))        
         player.guardar_items("violão")
     
     else:
