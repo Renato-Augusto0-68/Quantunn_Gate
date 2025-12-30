@@ -8,15 +8,21 @@ from personagem import Personagem
 pygame.init()
 WIDTH, HEIGHT = 900, 700
 win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Quantunn Gate - Capítulo 1")
+pygame.display.set_caption("Quantunn Gate")
 
 # Cores e fontes
 WHITE = (255, 255, 255)
 BLACK = (2, 2, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+BLUE = (0, 150, 255)
+CYAN = (0, 255, 255)
+GRAY = (100, 100, 100)
+DARK_GRAY = (50, 50, 50)
 FONT = pygame.font.SysFont("Arial", 20)
 BIGFONT = pygame.font.SysFont("Arial", 28, True)
+TITLE_FONT = pygame.font.SysFont("Arial", 72, True)
+SUBTITLE_FONT = pygame.font.SysFont("Arial", 24)
 clock = pygame.time.Clock()
 FPS = 60
 
@@ -162,24 +168,45 @@ def events():
      return events2[r.randrange(len(events2))]
 
 #   INÍCIO DO JOGO
+from memorias import memories
+from historia import livro_decisoes,Finald,ficar,sf,atencao,roubar,p2_4,créditos
 
-from historia import livro_decisoes,Finald,ficar,sf,atencao,roubar,p2_4
+intro1 = ("Quantunn Gate",
+          "\n                                         Versão 1.35.2",
+          "\n\n\n\n\n\n\n\n\n\n\n Bem vindo, ao futuro da raça humana"   
+    )
 
-intro = (
-    f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. "
-    "Há um sistema de dutos de ventilação fazendo um barulho esquisito. Você não tem armas, ou celular. Muito menos um relógio. Há um violão na parede "
-    "e dois caminhos: esquerda e direita.")
+escolha1=scene(f"{intro1}",[
+  {"text":"Jogar","action":"iniciar"},    
+  {"text":"Créditos","action":"créditos"}   
+])
 
-escolha = scene(f"{intro}", [
-    {"text": "Ir para esquerda", "action": "esquerda"},
-    {"text": "Ir para direita", "action": "direita"}])
+if escolha1=="créditos":
+    for i in range(3):
+        show_text_block(créditos(i))
 
-if escolha == "direita":
-    show_text_block("Você anda no caminho escuro, feito de metal. Você continua andando, e sem ver, cai no buraco. Você morre")
-    die()
+if escolha1=="iniciar":
+    show_text_block("Carregando...")
+    time.sleep(5)
+    show_text_block("\n\n\n\n                  A menor distancia entre dois pontos curvos é uma reta geodésica.\nEuclides")
+    time.sleep(6)
+    intro = (
+        f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. ",
+        f"Você se lembra um pouco, daquele lugar e de como você acabou indo parar aí... Você estava vagando sozinho e... Não consegue se lembrar mais do porque estar nesse lugar.",
+        "Mas, sente um tipo de incômodo... Cheiro de comida velha...",
+        "Há um sistema de dutos de ventilação fazendo um barulho esquisito. Você não tem armas, ou celular. Muito menos um relógio. Há um violão na parede "
+        "e dois caminhos: esquerda e direita.")
 
-elif escolha == "esquerda":
-    escolha2 = scene(
+    escolha = scene(f"{intro}", [
+        {"text": "Ir para esquerda", "action": "esquerda"},
+        {"text": "Ir para direita", "action": "direita"}])
+
+    if escolha == "direita":
+        show_text_block("Você anda no caminho escuro, feito de metal. Você continua andando, e sem ver, cai no buraco. Você morre")
+        die()
+
+    elif escolha == "esquerda":
+        escolha2 = scene(
         "Você encontra um portão de metal gigante. Não dá pra derrubar. Você volta e decide se vai pegar o violão ou tentar entrar, na marra...",
         [   {"text": "Pegar o violão", "action": "violao"},
             {"text": "Tentar arrombar a porta", "action": "arrombar"}])
@@ -196,6 +223,7 @@ elif escolha == "esquerda":
         show_text_block("Em você, pula um mutante cinza, repleto de tentáculos, pele deformada e um rosto sem olhos ou nariz. Ele te mata ")
         player.dano(3)
         die()
+    
     escolha3 = scene("Você vai ficar onde está ou investigar o barulho?", [
     {"text": "Ficar", "action": "ficar"},
     {"text": "Investigar", "action": "investigar"}
@@ -222,50 +250,55 @@ elif escolha == "esquerda":
                     show_text_block(roubar(i))
                 player.guardar_items("Lanterna")
                 show_text_block(f"Você a usa para iluminar o local e dorme com a {player.mostrar_items('Espingarda Remington')}, no chão.")
+                show_text_block("E, antes de dormir você se lembra de outras coisas que ocorreram no passado: ")
+                show_text_block("Em 2078, surgiu o Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do preço, poucos tinham muito e o oposto também. Logo, disto iniciou-se uma guerra..."),
+                time.delay(20)
+                show_text_block("E com a guerra, veio a ascensão daqueles que vieram de falhas da tecnologia genética... Mutantes... E seu líder diabólico, Jrisk... ")
     player.recuperar()
     pygame.display.set_caption("Quantunn Gate - Capítulo 2")
 
-intro2 = (
+    intro2 = (
     "Capítulo 2")
 
-show_text_block(f"{events()}")
-show_text_block("De dia, você acorda. Os posteres presos na parede do galpão ilustram aparentes planos militares. Você decide se vai analisar os planos na parede, ou não")  
+    show_text_block(f"{events()}")
+    show_text_block("De dia, você acorda. Os posteres presos na parede do galpão ilustram aparentes planos militares, e você quer simplesmente resolver tudo.De preferência sair dalí, ao menos."),
+    show_text_block("Você decide se vai analisar os planos na parede, ou não")  
 
-escolha5=scene("O que você faz?",[
+    escolha5=scene("O que você faz?",[
         {"text": "Analisar os planos", "action": "analisar"},
         {"text": "Ignorar", "action": "ignorar"}]) 
 
-if escolha5 == "analisar":
+    if escolha5 == "analisar":
         show_text_block("Você analisa os planos. O galpão aparentemente foi construído em cima do plano final mutante para o extermínio humano. Eles desenvolveram uma máquina chamada 'Quantunn Gate'. Não está claro o que ela faz. Apenas que utiliza de intensos campos eletromagnéticos, em teoria, capazes de promover a separação de prótons dos núcleos atômicos")
         time.sleep(2)
         show_text_block(" De qualquer forma, você estuda a sala... Existe o que parece ser uma sala de controle. Você deduz que controlam a máquina, apesar de não saber EXATAMENTE o que ela faz...")
         show_text_block("Os botões, quando ativados, mostram datas... como 2019, 2025 e 2001...")
         time.sleep(2)
         show_text_block("Você esbarra em um botão vermelho, que ativa a máquina. Você vê uma luz intensa e branca, e sente um intenso calor, e ouve uma voz que diz: 'Escolha o ano' ")
-else:
+    else:
         show_text_block("Você vai embora do galpão em direção a um destino desconhecido. Lá, você reflete sobre a vida, o passado e futuro. lá, a vida parece fazer mais sentido sendo arpoveitado no que der e vier. Então você vira um monje e vive na montanha \n Parabéns, você desbloqueou o final secreto: 'Pacíficamente viver' Fim de jogo, obrigado por ter jogado meu jogo.")
         die()
 
-show_text_block(jogador.iniciar_viagem())
-if year==2025 ^ year==2019:
+    show_text_block(jogador.iniciar_viagem())
+    if year==2025 ^ year==2019:
         show_text_block(botao.viagem(year).saída)
 
-for i in range(5):
+    for i in range(5):
      show_text_block(sf(i))
      time.sleep(2)
      if sf(i)==sf(-3):
           player.guardar_items("Roupas Antigas"),
      if sf(i)==sf(-2):
           show_text_block(f"{year}")
-pygame.display.set_caption("Quantunn Gate - Capítulo 3")
-intro3 = ("Capítulo 3")
+    pygame.display.set_caption("Quantunn Gate - Capítulo 3")
+    intro3 = ("Capítulo 3")
 
-for i in range(10):
-     show_text_block(Finald(i))
-     if Finald(i)==(Finald(-3) or Finald(-1)):
+    for i in range(10):
+        show_text_block(Finald(i))
+        if Finald(i)==(Finald(-3) or Finald(-1)):
             time.sleep(2)
-     if Finald(i)==Finald(-3):
+        if Finald(i)==Finald(-3):
             player.dano(2)
-     if Finald(i)==(Finald(-1)):
+        if Finald(i)==(Finald(-1)):
             die()
 # CONTINUA AQUI — CAPÍTULO 3...

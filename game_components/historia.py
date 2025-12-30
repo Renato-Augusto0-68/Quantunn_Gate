@@ -1,3 +1,7 @@
+   #"Em 2078, os primeiros processos de melhoria genética, via Crispr-CAS19, inicialmente processos supercaros, são iniciados. Humanos superiores em velocidade, força e inteligência são montados a dedo. Mas as falhas de sequenciamento da Crispr ou mesmo falhas genéticas são segregadas as escondidas. Os seres deformados passaram a ser chamados de mutantes",
+    #"Com o tempo, um imenso preconceito entre humanos melhorados [chamados de Prometeus], humanos comuns e mutantes se inicia. A princípio, os Prometeus não aceitam os comuns, por considerarem-se os 'legítimos humanos' que devem ocupar a Terra, e mutantes, por considerarem-os ainda mais inferiores que os comuns",
+    #"Assim, o preconceito se encaixou também dos comuns aos mutantes e dos murantes contra todos. E disto, iniciou se a guerra. Uma guerra que praticamente devastou toda a população humana (Prometeu ou não). No final, os mutantes assumiram o controle, liderados por Jrisk, a primeira anomalia genética, e consequentemente o primeiro mutante.",
+
 def Finald(i):
     pf=[
         f"Fora de lá, você anda e encontra uma outra propaganda. Nela, está sendo dito sobre a criação da Crispr-CAS9. Você lê a matéria e percebe algo aterrador... ",
@@ -19,6 +23,21 @@ def ficar(i):
     "Você morre. Game Over."]
     return p2[i]
 
+def bad_choice(i):
+    facts=[
+        "Você corre, bate o ombro, e fica com menos vida (segundo o medidor biológico) e desloca o osso. Você urra de dor, e volta até a sala inicial com imensa dor.",
+        "Mas, teimoso, continua onde começou, e tenta pega o violão. Mas não consegue pela dor... O portão continua fechado, e então o duto desaba.",
+        "Em você, pula um mutante cinza, repleto de tentáculos, pele deformada e um rosto sem olhos ou nariz. Ele te mata "
+    ]
+    return facts[i]
+
+def créditos(i):
+    informacoes=[
+       "O jogo foi desenvolvido em equipe:",
+       "Renato Augusto- Roteiro, personagens, narrativa e código",
+       "Gabriel, José e Davi- Código e Roteiro"
+    ] 
+    return informacoes[i]
 
 def p2_4(i):
     p3=["Você pega o violão",
@@ -26,11 +45,18 @@ def p2_4(i):
     return p3[i]
 
 def atencao(i):
-    p4=["Você observa atentamente. E do nada se lembra de seu nome...Richard. Em 2078, os primeiros processos de melhoria genética, via Crispr-CAS19, inicialmente processos supercaros, são iniciados. Humanos superiores em velocidade, força e inteligência são montados a dedo. Mas as falhas de sequenciamento da Crispr ou mesmo falhas genéticas são segregadas as escondidas. Os seres deformados passaram a ser chamados de mutantes",
-    "Com o tempo, um imenso preconceito entre humanos melhorados [chamados de Prometeus], humanos comuns e mutantes se inicia. A princípio, os Prometeus não aceitam os comuns, por considerarem-se os 'legítimos humanos' que devem ocupar a Terra, e mutantes, por considerarem-os ainda mais inferiores que os comuns",
-    "Assim, o preconceito se encaixou também dos comuns aos mutantes e dos murantes contra todos. E disto, iniciou se a guerra. Uma guerra que praticamente devastou toda a população humana (Prometeu ou não). No final, os mutantes assumiram o controle, liderados por Jrisk, a primeira anomalia genética, e consequentemente o primeiro mutante.",
+    p4=["Você observa atentamente. E do nada se lembra de seu nome...Richard.",    
+    "Em recortes de documentários breves, você vê imagens de bombas caindo… E de muitos desabrigados, dentre eles, você mesmo"
+    "Você se lembra de tanques atravessando a casa de um amigo seu, quando você tinha menos de 5 anos... Você se escondeu dentro do banheiro... E quando você saiu, o que restou da casa do seus amigos, foi o banheiro que você estava e dois, dos quatro, quartos da casa",
+    "Muita fúria vem, intrusivamente, na sua cabeça...",
+    "Você se lembra de sua filha, sim, ela é a sua luz e amor da vida. ",
+    "Sem nem perceber, você serrou os punhos, pela raiva que veio a tona, outra vez.",
+    #"Em 2078, os primeiros processos de melhoria genética, via Crispr-CAS19, inicialmente processos supercaros, são iniciados. Humanos superiores em velocidade, força e inteligência são montados a dedo. Mas as falhas de sequenciamento da Crispr ou mesmo falhas genéticas são segregadas as escondidas. Os seres deformados passaram a ser chamados de mutantes",
+    #"Com o tempo, um imenso preconceito entre humanos melhorados [chamados de Prometeus], humanos comuns e mutantes se inicia. A princípio, os Prometeus não aceitam os comuns, por considerarem-se os 'legítimos humanos' que devem ocupar a Terra, e mutantes, por considerarem-os ainda mais inferiores que os comuns",
+    #"Assim, o preconceito se encaixou também dos comuns aos mutantes e dos murantes contra todos. E disto, iniciou se a guerra. Uma guerra que praticamente devastou toda a população humana (Prometeu ou não). No final, os mutantes assumiram o controle, liderados por Jrisk, a primeira anomalia genética, e consequentemente o primeiro mutante.",
     "Depois, você sai com a moto. No caminho a moto descarrega, mas antes dela morrer, você acha um galpão.",
-    "Você para no galpão, aparentemente da resistência humana, e pega o farol, que ainda tem energia independente da moto, e usa pra iluminar o local. Depois, se deita no chão com a espingarda"]
+    "Você para no galpão, com um símbolo representando população humana (você aprendeu isso crescendo... Na sua casa tinha o mesmo símbolo), e pega o farol, que ainda tem energia independente da moto, e usa pra iluminar o local. Depois, se deita no chão com a espingarda"
+    ]
     return p4[i]
             
 def roubar():
@@ -55,7 +81,7 @@ class livro_decisoes:
    
    def p(self):
         self.pf=[
-            f"Fora de lá, você anda e encontra uma outra propaganda. Nela, está sendo dito sobre a criação da Crispr-CAS9. Você lê a matéria e percebe algo aterrador... ",
+            f"Fora de lá, você anda e encontra uma outra propaganda. Nela, está sendo dito sobre a criação da Crispr-CAS19. Você lê a matéria e percebe algo aterrador... ",
             "Ao lado da matéria, há uma propaganda, com uma foto do Mazelinha falando 'Que mazela!' ",
             "Em um muro ao lado, está escrito 'Riders on the storm... Into this house we're born... Like a dog without a bone, and an actor out of loan...' ",
             "Ao longo do céu escuro e poluído, com prédios cinzentos e águas poluídas do que parece ser São Paulo... Você visualiza algo ainda mais estranho",
@@ -70,7 +96,7 @@ class livro_decisoes:
    
    def ficar(self):
         self.p2=["No final da música, o portão se fecha."
-            "Em seguida, um mutante pula em você enquanto termina de tocar. ",
+            "Em seguida, um ser cinzento, com tentáculos,híbrido entre símio e humanoide, pula em você enquanto termina de tocar. ",
             "Você morre. Game Over."]
         return self.p2
    
