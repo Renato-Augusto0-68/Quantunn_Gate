@@ -25,7 +25,8 @@ TITLE_FONT = pygame.font.SysFont("Arial", 72, True)
 SUBTITLE_FONT = pygame.font.SysFont("Arial", 24)
 clock = pygame.time.Clock()
 FPS = 60
-
+version="1.5.0"
+activate=False
 player = Personagem()
 h=livro_decisoes()
 
@@ -68,46 +69,51 @@ jogador=botao(year)
 viagem1=viagem(year)
 
 def show_ui():
-    vida_text = FONT.render(f"Vida: {player.vida}%", True, GREEN)
-    itens_text = FONT.render(f"Itens: {player.mostrar_items()}", True, WHITE)
-    win.blit(vida_text, (20, HEIGHT - 60))
-    win.blit(itens_text, (20, HEIGHT - 30))
+    if activate==True:
+        vida_text = FONT.render(f"Vida: {player.vida}%", True, GREEN)
+        itens_text = FONT.render(f"Itens: {player.mostrar_items()}", True, WHITE)
+        win.blit(vida_text, (20, HEIGHT - 60))
+        win.blit(itens_text, (20, HEIGHT - 30))
+    if activate==False:
+         versao_text=FONT.render(f"Versão: {version}",True, GREEN)
+         win.blit(versao_text, (20, HEIGHT - 60))
+    input_box = pygame.Rect(30, HEIGHT - 90, 300, 32)
+    color_inactive = pygame.Color('lightskyblue3')
+    color_active = pygame.Color('dodgerblue2')
+    def get_player_name(prompt="Digite o nome do personagem:", default="JOGADOR"):
+        active = False
+        text = ""
+        clock = pygame.time.Clock()
+        while True:
+            win.fill(BLACK)
+            draw_text(win, prompt, (30, 30), FONT)
+            color = color_active if active else color_inactive
+            pygame.draw.rect(win, color, input_box, 2)
+            txt_surface = FONT.render(text if text else default, True, WHITE)
+            win.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+            show_ui()
+            pygame.display.update()
+            clock.tick(FPS)
 
-input_box = pygame.Rect(30, HEIGHT - 90, 300, 32)
-color_inactive = pygame.Color('lightskyblue3')
-color_active = pygame.Color('dodgerblue2')
-def get_player_name(prompt="Digite o nome do personagem:", default="JOGADOR"):
-    active = False
-    text = ""
-    clock = pygame.time.Clock()
-    while True:
-        win.fill(BLACK)
-        draw_text(win, prompt, (30, 30), FONT)
-        color = color_active if active else color_inactive
-        pygame.draw.rect(win, color, input_box, 2)
-        txt_surface = FONT.render(text if text else default, True, WHITE)
-        win.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
-        show_ui()
-        pygame.display.update()
-        clock.tick(FPS)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if input_box.collidepoint(event.pos):
-                    active = True
-                else:
-                    active = False
-            elif event.type == pygame.KEYDOWN and active:
-                if event.key == pygame.K_RETURN:
-                    return text.strip() if text.strip() != "" else default
-                elif event.key == pygame.K_BACKSPACE:
-                    text = text[:-1]
-                else:
-                    if event.unicode.isprintable():
-                        text += event.unicode
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if input_box.collidepoint(event.pos):
+                         active = True
+                    else:
+                        active = False
+                elif event.type == pygame.KEYDOWN and active:
+                    if event.key == pygame.K_RETURN:
+                         return text.strip() if text.strip() != "" else default
+                    elif event.key == pygame.K_BACKSPACE:
+                        text = text[:-1]
+                    else:
+                        if event.unicode.isprintable():
+                            text += event.unicode
+game_theme = pygame.mixer.Sound('Quantunn_Gate\game_components\synprez-2025_12_31-11_56_44.wav')
+credits_theme=pygame.mixer.Sound('Quantunn_Gate\game_components\credits_theme.wav')
 
 def investigar():
             show_text_block("Você entra no portão. Lá dentro, há uma moto cinza voadora fracamente iluminada por lâmpadas florescentes fracas, similar à uma Harley Davidson e uma espingarda Remington.")
@@ -154,7 +160,7 @@ def scene(text, options):
                 elif event.key == pygame.K_RETURN:
                     return options[selected]['action']
 
-def show_text_block(text, delay=7700):
+def show_text_block(text, delay=9700):
     win.fill(BLACK)
 
     draw_text(win, text, (30, 30), FONT)
@@ -171,9 +177,11 @@ def events():
 from memorias import memories
 from historia import livro_decisoes,Finald,ficar,sf,atencao,roubar,p2_4,créditos
 
-intro1 = ("Quantunn Gate",
-          "\n                                         Versão 1.35.2",
-          "\n\n\n\n\n\n\n\n\n\n\n Bem vindo, ao futuro da raça humana"   
+intro1 = ("Quantunn Gate\n"
+          "\n"
+          f"Versão {version}\n"
+          "\n"
+          "Bem vindo, ao futuro da raça humana"
     )
 
 escolha1=scene(f"{intro1}",[
@@ -182,21 +190,28 @@ escolha1=scene(f"{intro1}",[
 ])
 
 if escolha1=="créditos":
+    credits_theme.play(0)
     for i in range(3):
         show_text_block(créditos(i))
 
 if escolha1=="iniciar":
+    game_theme.play(-1)
     show_text_block("Carregando...")
     time.sleep(5)
-    show_text_block("\n\n\n\n                  A menor distancia entre dois pontos curvos é uma reta geodésica.\nEuclides")
+    show_text_block("                         A menor distancia entre dois pontos curvos é uma reta geodésica.    ")
+    show_text_block("Euclides de Alexandria")
     time.sleep(6)
+    activate=True
+
+    show_text_block(f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. ")
+    time.sleep(2)
+    show_text_block(f"Você se lembra um pouco, daquele lugar e de como você acabou indo parar aí... Você estava vagando sozinho e... Não consegue se lembrar mais do porque estar nesse lugar.")
+    show_text_block("Mas, sente um tipo de incômodo... Cheiro de comida velha...")
+
     intro = (
-        f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. ",
-        f"Você se lembra um pouco, daquele lugar e de como você acabou indo parar aí... Você estava vagando sozinho e... Não consegue se lembrar mais do porque estar nesse lugar.",
-        "Mas, sente um tipo de incômodo... Cheiro de comida velha...",
         "Há um sistema de dutos de ventilação fazendo um barulho esquisito. Você não tem armas, ou celular. Muito menos um relógio. Há um violão na parede "
         "e dois caminhos: esquerda e direita.")
-
+    
     escolha = scene(f"{intro}", [
         {"text": "Ir para esquerda", "action": "esquerda"},
         {"text": "Ir para direita", "action": "direita"}])

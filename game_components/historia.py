@@ -34,7 +34,7 @@ def bad_choice(i):
 def créditos(i):
     informacoes=[
        "O jogo foi desenvolvido em equipe:",
-       "Renato Augusto- Roteiro, personagens, narrativa e código",
+       "Renato Augusto- Roteiro, personagens, narrativa, código e trilha sonora",
        "Gabriel, José e Davi- Código e Roteiro"
     ] 
     return informacoes[i]
@@ -47,7 +47,7 @@ def p2_4(i):
 def atencao(i):
     p4=["Você observa atentamente. E do nada se lembra de seu nome...Richard.",    
     "Em recortes de documentários breves, você vê imagens de bombas caindo… E de muitos desabrigados, dentre eles, você mesmo"
-    "Você se lembra de tanques atravessando a casa de um amigo seu, quando você tinha menos de 5 anos... Você se escondeu dentro do banheiro... E quando você saiu, o que restou da casa do seus amigos, foi o banheiro que você estava e dois, dos quatro, quartos da casa",
+    "Você se lembra de tanques atravessando a casa de um amigo seu, quando você tinha menos de 9 anos... Você se escondeu dentro do banheiro... E quando você saiu, o que restou da casa do seus amigos, foi o banheiro que você estava e dois, dos quatro, quartos da casa",
     "Muita fúria vem, intrusivamente, na sua cabeça...",
     "Você se lembra de sua filha, sim, ela é a sua luz e amor da vida. ",
     "Sem nem perceber, você serrou os punhos, pela raiva que veio a tona, outra vez.",
