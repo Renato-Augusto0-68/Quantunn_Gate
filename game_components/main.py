@@ -2,7 +2,7 @@
 import pygame
 import sys, time
 import random as r
-from historia import livro_decisoes
+
 from personagem import Personagem
 # --- CONFIG INICIAL ---
 pygame.init()
@@ -20,15 +20,13 @@ CYAN = (0, 255, 255)
 GRAY = (100, 100, 100)
 DARK_GRAY = (50, 50, 50)
 FONT = pygame.font.SysFont("Arial", 20)
-BIGFONT = pygame.font.SysFont("Arial", 28, True)
-TITLE_FONT = pygame.font.SysFont("Arial", 72, True)
-SUBTITLE_FONT = pygame.font.SysFont("Arial", 24)
+TITLE_FONT = pygame.font.SysFont("Arial", 24, True)
+SUBTITLE_FONT = pygame.font.SysFont("Arial", 18,False,True)
 clock = pygame.time.Clock()
 FPS = 60
 version="1.5.0"
 activate=False
 player = Personagem()
-h=livro_decisoes()
 
 # --- FUNÇÕES ---
 def draw_text(surface, text, pos, font, color=WHITE, max_width=850):
@@ -47,7 +45,8 @@ def draw_text(surface, text, pos, font, color=WHITE, max_width=850):
     for line in lines:
         text_surface = font.render(line, True, color)
         surface.blit(text_surface, (pos[0], pos[1] + y_offset))
-        y_offset += font.get_linesize()
+        y_offset += font.get_linesize()  
+
 def die():
     pygame.display.update()
     pygame.quit()
@@ -76,42 +75,13 @@ def show_ui():
         win.blit(itens_text, (20, HEIGHT - 30))
     if activate==False:
          versao_text=FONT.render(f"Versão: {version}",True, GREEN)
+         equipe_text=FONT.render("Desenvolvido pela Invisble Label",True,WHITE)
          win.blit(versao_text, (20, HEIGHT - 60))
+         win.blit(equipe_text, (20, HEIGHT-40))
     input_box = pygame.Rect(30, HEIGHT - 90, 300, 32)
     color_inactive = pygame.Color('lightskyblue3')
     color_active = pygame.Color('dodgerblue2')
-    def get_player_name(prompt="Digite o nome do personagem:", default="JOGADOR"):
-        active = False
-        text = ""
-        clock = pygame.time.Clock()
-        while True:
-            win.fill(BLACK)
-            draw_text(win, prompt, (30, 30), FONT)
-            color = color_active if active else color_inactive
-            pygame.draw.rect(win, color, input_box, 2)
-            txt_surface = FONT.render(text if text else default, True, WHITE)
-            win.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
-            show_ui()
-            pygame.display.update()
-            clock.tick(FPS)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if input_box.collidepoint(event.pos):
-                         active = True
-                    else:
-                        active = False
-                elif event.type == pygame.KEYDOWN and active:
-                    if event.key == pygame.K_RETURN:
-                         return text.strip() if text.strip() != "" else default
-                    elif event.key == pygame.K_BACKSPACE:
-                        text = text[:-1]
-                    else:
-                        if event.unicode.isprintable():
-                            text += event.unicode
+    
 game_theme = pygame.mixer.Sound('Quantunn_Gate\game_components\synprez-2025_12_31-11_56_44.wav')
 credits_theme=pygame.mixer.Sound('Quantunn_Gate\game_components\credits_theme.wav')
 
@@ -160,10 +130,9 @@ def scene(text, options):
                 elif event.key == pygame.K_RETURN:
                     return options[selected]['action']
 
-def show_text_block(text, delay=9700):
+def show_text_block(text,font=FONT,delay=9700):
     win.fill(BLACK)
-
-    draw_text(win, text, (30, 30), FONT)
+    draw_text(win, text, (30, 30), font)
     show_ui()
     pygame.display.update()
     pygame.time.delay(delay)
@@ -174,13 +143,12 @@ def events():
      return events2[r.randrange(len(events2))]
 
 #   INÍCIO DO JOGO
-from memorias import memories
-from historia import livro_decisoes,Finald,ficar,sf,atencao,roubar,p2_4,créditos
+from historia import Finald,ficar,sf,atencao,roubar,p2_4,créditos
+show_text_block("Melhor jogar com fone de ouvido.",font=TITLE_FONT)
+show_text_block("Esta ainda é a Demo deste jogo!",font=TITLE_FONT)
+time.sleep(5)
 
-intro1 = ("Quantunn Gate\n"
-          "\n"
-          f"Versão {version}\n"
-          "\n"
+intro1 = ("Quantunn Gate"
           "Bem vindo, ao futuro da raça humana"
     )
 
@@ -190,19 +158,18 @@ escolha1=scene(f"{intro1}",[
 ])
 
 if escolha1=="créditos":
-    credits_theme.play(0)
+    game_theme.play(0)
     for i in range(3):
         show_text_block(créditos(i))
 
 if escolha1=="iniciar":
-    game_theme.play(-1)
+    credits_theme.play(-1)
     show_text_block("Carregando...")
     time.sleep(5)
-    show_text_block("                         A menor distancia entre dois pontos curvos é uma reta geodésica.    ")
-    show_text_block("Euclides de Alexandria")
+    show_text_block("                       'A menor distancia entre dois pontos curvos é uma reta geodésica.', Euclides de Alexandria        ",SUBTITLE_FONT)
     time.sleep(6)
     activate=True
-
+    
     show_text_block(f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. ")
     time.sleep(2)
     show_text_block(f"Você se lembra um pouco, daquele lugar e de como você acabou indo parar aí... Você estava vagando sozinho e... Não consegue se lembrar mais do porque estar nesse lugar.")
@@ -226,7 +193,7 @@ if escolha1=="iniciar":
         [   {"text": "Pegar o violão", "action": "violao"},
             {"text": "Tentar arrombar a porta", "action": "arrombar"}])
     if escolha2 == "violao":
-        for i in range(2):
+        for i in range(4):
             show_text_block(p2_4(i))        
         player.guardar_items("violão")
     
@@ -266,7 +233,8 @@ if escolha1=="iniciar":
                 player.guardar_items("Lanterna")
                 show_text_block(f"Você a usa para iluminar o local e dorme com a {player.mostrar_items('Espingarda Remington')}, no chão.")
                 show_text_block("E, antes de dormir você se lembra de outras coisas que ocorreram no passado: ")
-                show_text_block("Em 2078, surgiu o Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do preço, poucos tinham muito e o oposto também. Logo, disto iniciou-se uma guerra..."),
+                
+                show_text_block("Alguns anos atrás, surgiu a Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do acesso difícil, poucos tinham e o muitos não. Logo, disto iniciou-se uma guerra..."),
                 time.delay(20)
                 show_text_block("E com a guerra, veio a ascensão daqueles que vieram de falhas da tecnologia genética... Mutantes... E seu líder diabólico, Jrisk... ")
     player.recuperar()
@@ -308,11 +276,11 @@ if escolha1=="iniciar":
     pygame.display.set_caption("Quantunn Gate - Capítulo 3")
     intro3 = ("Capítulo 3")
 
-    for i in range(10):
+    for i in range(12):
         show_text_block(Finald(i))
-        if Finald(i)==(Finald(-3) or Finald(-1)):
+        if Finald(i)==(Finald(-5) or Finald(-1)):
             time.sleep(2)
-        if Finald(i)==Finald(-3):
+        if Finald(i)==Finald(-5):
             player.dano(2)
         if Finald(i)==(Finald(-1)):
             die()
