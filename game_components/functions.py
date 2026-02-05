@@ -45,7 +45,7 @@ def p2_4(i):
     p3=["Você pega o violão",
         "E começa a tocar a única música que sabe, e a que mais dói..."
         "O violão, que você carrega nas costas, com todo o cuidado do mundo, também lhe faz lembrar muito e alguém especial. Ele não é seu, mas já foi de alguém próximo",
-        " Porque te faz lembrar de alguém: Riders on The Storm, de The Doors. No segundo refrão, você ouve um barulho gigantesco, como algo se movendo, enquanto os ruídos do duto parecem se aproximar. Você guarda o violão assim que ouve os barulhos."]
+        "E uma música também lhe lembra desse mesmo outro alguém: Riders on The Storm, de The Doors. No segundo refrão, você ouve um barulho gigantesco, como algo se movendo, enquanto os ruídos do duto parecem se aproximar. Você guarda o violão assim que ouve os barulhos."]
     return p3[i]
 
 def atencao(i):
@@ -63,10 +63,12 @@ def atencao(i):
     ]
     return p4[i]
             
-def roubar():
-    "Você redireciona a energia da TV para a moto e vai embora",
+def roubar(i):
+    p5=["Você redireciona a energia da TV para a moto e vai embora",
     "Você encontra um galpão, aparentemente militar, e decide parar, para dormir",
     "Você estaciona a moto dentro do galpão. Também descobre uma lanterna dentro da jaqueta."
+    ]
+    return p5[i]
 
 def sf(i):
     p5=[

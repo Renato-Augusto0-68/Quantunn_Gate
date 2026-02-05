@@ -1,4 +1,4 @@
-
+from tkinter import font
 import pygame
 import sys, time
 import random as r
@@ -8,7 +8,7 @@ from personagem import Personagem
 pygame.init()
 WIDTH, HEIGHT = 900, 700
 win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Quantunn Gate")
+screen=pygame.display.set_caption("Quantunn Gate")
 
 # Cores e fontes
 WHITE = (255, 255, 255)
@@ -27,6 +27,14 @@ FPS = 60
 version="1.5.0"
 activate=False
 player = Personagem()
+
+# Botão de pular texto
+largura_botao = 110
+altura_botao = 40
+margem = 8 # Margem da borda direita
+pos_x = WIDTH - largura_botao - margem  # Posicionado à direita
+pos_y = (HEIGHT - altura_botao) // 1.019999 # Centralizado verticalmente
+skip_text_button = pygame.Rect(pos_x, pos_y, largura_botao, altura_botao)
 
 # --- FUNÇÕES ---
 def draw_text(surface, text, pos, font, color=WHITE, max_width=850):
@@ -94,7 +102,7 @@ def investigar():
             show_text_block(f" Ele pula em você e morde seu ombro,")
             player.dano(2)               
             show_text_block(f"mas você consegue desviar, pegar a {player.mostrar_items('Espingarda Remington')}, carregar e ")
-            show_text_block("atirar. Você acerta na cabeça do mutante, abatendo o ser na hora. Ao olhar o cadáver do ser, você percebe uma camada subcutânea espessa de queratina, que age como colete improvisado")
+            show_text_block("atirar. Você acerta na cabeça do mutante, abatendo o ser na hora. Ao olhar o cadáver do ser, você percebe uma camada subcutânea espessa de queratina, que age como colete improvisado.")
             time.sleep(2)
             show_text_block(f"A moto possui um painel digital que mostra a energia restante, além da velocidade. Você sobe na moto e arromba uma porta de metal com a moto e sai voando. No caminho, você sente dor no ombro mordido pelo mutante.")
             player.recuperar(1)
@@ -110,7 +118,6 @@ def scene(text, options):
         for i, option in enumerate(options):
             color = GREEN if i == selected else WHITE
             option_text = FONT.render(f"> {option['text']}", True, color)
-            
             win.blit(option_text, (40, 300 + i * 30))
 
         show_ui()
@@ -130,12 +137,41 @@ def scene(text, options):
                 elif event.key == pygame.K_RETURN:
                     return options[selected]['action']
 
+def draw_button(surface, text="Pular texto?", retangulo=skip_text_button, cor_fundo=GREEN):
+    # Desenha o fundo do botão
+    pygame.draw.rect(surface, cor_fundo, retangulo, border_radius=10)
+    
+    # Renderiza o texto
+    texto_surf = FONT.render(text, True, WHITE)
+    
+    # Centraliza o texto no botão
+    texto_rect = texto_surf.get_rect(center=retangulo.center)
+    surface.blit(texto_surf, texto_rect)
+
 def show_text_block(text,font=FONT,delay=9700):
-    win.fill(BLACK)
-    draw_text(win, text, (30, 30), font)
-    show_ui()
-    pygame.display.update()
-    pygame.time.delay(delay)
+    start_time = pygame.time.get_ticks()
+    while True:
+        win.fill(BLACK)
+        draw_text(win, text, (30, 30), font)
+        if activate==True:
+            draw_button(win)
+        
+        show_ui()
+        pygame.display.update()
+        
+        if pygame.time.get_ticks() - start_time >= delay:
+            break
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and activate:
+                    if skip_text_button.collidepoint(event.pos):
+                        return 
+    clock.tick(FPS)                      
+    
+    
 
 def events():
      events2=["Você vê um rosto marcado... Cicatrizes, peças expostas de matal, marcas de cirurgias, manchas de sangue e sérias deformações faciais e olheiras profundas... e um rosto que não parece humano, e nem totalmente desumano... Jrisk te encara, LUA PÁLIDA SORRI ABERTAMENTE... Não há caminhos: A LUA PÁLIDA SORRI ABERTAMENTE. O chão é macio. LUA PÁLIDA SORRI ABERTAMENTE. Jrisk, na forma da lua sorri abertamente para você...",
@@ -143,7 +179,7 @@ def events():
      return events2[r.randrange(len(events2))]
 
 #   INÍCIO DO JOGO
-from historia import Finald,ficar,sf,atencao,roubar,p2_4,créditos
+from Quantunn_Gate.game_components.functions import Finald,ficar,sf,atencao,roubar,p2_4,créditos
 show_text_block("Melhor jogar com fone de ouvido.",font=TITLE_FONT)
 show_text_block("Esta ainda é a Demo deste jogo!",font=TITLE_FONT)
 time.sleep(5)
@@ -193,10 +229,9 @@ if escolha1=="iniciar":
         [   {"text": "Pegar o violão", "action": "violao"},
             {"text": "Tentar arrombar a porta", "action": "arrombar"}])
     if escolha2 == "violao":
-        for i in range(4):
+        for i in range(3):
             show_text_block(p2_4(i))        
         player.guardar_items("violão")
-    
     else:
         show_text_block(f" Você corre, bate o ombro, e fica com menos vida (segundo o medidor biológico) e desloca o osso. Você urra de dor, e volta até a sala inicial com imensa dor.")
         player.dano()
@@ -205,7 +240,6 @@ if escolha1=="iniciar":
         show_text_block("Em você, pula um mutante cinza, repleto de tentáculos, pele deformada e um rosto sem olhos ou nariz. Ele te mata ")
         player.dano(3)
         die()
-    
     escolha3 = scene("Você vai ficar onde está ou investigar o barulho?", [
     {"text": "Ficar", "action": "ficar"},
     {"text": "Investigar", "action": "investigar"}
@@ -217,7 +251,6 @@ if escolha1=="iniciar":
         die()
     elif escolha3 == "investigar":
             investigar()
-            show_text_block(f"{player.show()}")            
             escolha4=scene(f"Está de noite, e no lado de fora, você lê: 'Prisão Blacksail, Since 2223. No caminho, você passa por uma televisão antiga. Nela, passam recortes de jornais e de documentários. A moto possui 56% de energia. Bastante, mas não suficiente para um trajeto maior que 60 Km. Então, decide se vai prestar atenção ou se vai roubar a energia para a moto.",[
                 {"text": "Prestar atenção", "action": "atencao"},
                 {"text": "Roubar energia", "action": "roubar"}
@@ -228,14 +261,14 @@ if escolha1=="iniciar":
                     show_text_block(atencao(i))
                 time.sleep(2)                    
             else:
-                for i in range(3):
+                for i in range (3):
                     show_text_block(roubar(i))
                 player.guardar_items("Lanterna")
                 show_text_block(f"Você a usa para iluminar o local e dorme com a {player.mostrar_items('Espingarda Remington')}, no chão.")
                 show_text_block("E, antes de dormir você se lembra de outras coisas que ocorreram no passado: ")
                 
                 show_text_block("Alguns anos atrás, surgiu a Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do acesso difícil, poucos tinham e o muitos não. Logo, disto iniciou-se uma guerra..."),
-                time.delay(20)
+                time.sleep(5)
                 show_text_block("E com a guerra, veio a ascensão daqueles que vieram de falhas da tecnologia genética... Mutantes... E seu líder diabólico, Jrisk... ")
     player.recuperar()
     pygame.display.set_caption("Quantunn Gate - Capítulo 2")
@@ -271,7 +304,7 @@ if escolha1=="iniciar":
      time.sleep(2)
      if sf(i)==sf(-3):
           player.guardar_items("Roupas Antigas"),
-     if sf(i)==sf(-2):
+     if sf(i)==sf(-1):
           show_text_block(f"{year}")
     pygame.display.set_caption("Quantunn Gate - Capítulo 3")
     intro3 = ("Capítulo 3")
