@@ -1,15 +1,15 @@
 from tkinter import font
-import pygame
-import sys, time
-import random as r
-
-from personagem import Personagem
+import pygame,sys,time
+import random as r;import cv2
+from opencv_functions.process_image import detectAndDisplay; 
+from pygame_functions.personagem import Personagem
 # --- CONFIG INICIAL ---
 pygame.init()
 WIDTH, HEIGHT = 900, 700
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 screen=pygame.display.set_caption("Quantunn Gate")
-
+cap = cv2.VideoCapture(0)
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 # Cores e fontes
 WHITE = (255, 255, 255)
 BLACK = (2, 2, 0)
@@ -23,17 +23,17 @@ FONT = pygame.font.SysFont("Arial", 20)
 TITLE_FONT = pygame.font.SysFont("Arial", 24, True)
 SUBTITLE_FONT = pygame.font.SysFont("Arial", 18,False,True)
 clock = pygame.time.Clock()
-FPS = 60
-version="1.5.0"
+FPS = 30
+version="1.7.0"
 activate=False
 player = Personagem()
 
 # Botão de pular texto
 largura_botao = 110
 altura_botao = 40
-margem = 8 # Margem da borda direita
-pos_x = WIDTH - largura_botao - margem  # Posicionado à direita
-pos_y = (HEIGHT - altura_botao) // 1.019999 # Centralizado verticalmente
+margem = 8 
+pos_x = WIDTH - largura_botao - margem  
+pos_y = (HEIGHT - altura_botao) // 1.019999
 skip_text_button = pygame.Rect(pos_x, pos_y, largura_botao, altura_botao)
 
 # --- FUNÇÕES ---
@@ -90,31 +90,19 @@ def show_ui():
     color_inactive = pygame.Color('lightskyblue3')
     color_active = pygame.Color('dodgerblue2')
     
-game_theme = pygame.mixer.Sound('Quantunn_Gate\game_components\synprez-2025_12_31-11_56_44.wav')
-credits_theme=pygame.mixer.Sound('Quantunn_Gate\game_components\credits_theme.wav')
-
-def investigar():
-            show_text_block("Você entra no portão. Lá dentro, há uma moto cinza voadora fracamente iluminada por lâmpadas florescentes fracas, similar à uma Harley Davidson e uma espingarda Remington.")
-            player.guardar_items("Espingarda Remington")
-            show_text_block("Na parede cinza, repleta de posteres de projetos técnicos de dispostivos voadores, manchados de sangue, há um armário de munição para a espingada e uma jaqueta de couro marrom.")
-            player.guardar_items("Munição")
-            show_text_block("Você examina o armário. Do armário aparece um mutante cinza, constituído de tentáculos. Ele pula na sua direção tentando te atacar.")
-            show_text_block(f" Ele pula em você e morde seu ombro,")
-            player.dano(2)               
-            show_text_block(f"mas você consegue desviar, pegar a {player.mostrar_items('Espingarda Remington')}, carregar e ")
-            show_text_block("atirar. Você acerta na cabeça do mutante, abatendo o ser na hora. Ao olhar o cadáver do ser, você percebe uma camada subcutânea espessa de queratina, que age como colete improvisado.")
-            time.sleep(2)
-            show_text_block(f"A moto possui um painel digital que mostra a energia restante, além da velocidade. Você sobe na moto e arromba uma porta de metal com a moto e sai voando. No caminho, você sente dor no ombro mordido pelo mutante.")
-            player.recuperar(1)
-            show_text_block("E, ao longo da longa estrada escura, de asfalto malfadado que você roda, o vento frio sopra e te deixa com frio")
-            time.sleep(2)
+game_theme = pygame.mixer.Sound('Quantunn_Gate\game_components\game_music\synprez-2026_01_01-09_35_05.wav')
+credits_theme2=pygame.mixer.Sound('Quantunn_Gate\game_components\game_music\credits_theme.wav')
+credits_theme=pygame.mixer.Sound('Quantunn_Gate\game_components\game_music\credits_theme2.wav')
 
 def scene(text, options):
+    choice = None
     selected = 0
+    last_choice_time = 0  
+    
     while True:
         win.fill(BLACK)
         draw_text(win, text, (20, 20), FONT)
-
+        
         for i, option in enumerate(options):
             color = GREEN if i == selected else WHITE
             option_text = FONT.render(f"> {option['text']}", True, color)
@@ -124,18 +112,41 @@ def scene(text, options):
         pygame.display.update()
         clock.tick(FPS)
 
+        # Processar eventos pygame primeiro
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    selected = (selected - 1) % len(options)
-                elif event.key == pygame.K_DOWN:
-                    selected = (selected + 1) % len(options)
-                elif event.key == pygame.K_RETURN:
+                  if event.key == pygame.K_RETURN:
                     return options[selected]['action']
+                  if activate==False:  
+                    if event.key == pygame.K_UP:
+                        selected = (selected - 1) % len(options)
+                    elif event.key == pygame.K_DOWN:
+                        selected = (selected + 1) % len(options)
+              
+
+        ret, frame = cap.read()
+        if ret:
+            frame = cv2.flip(frame, 1)  
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            
+            # Detectar rostos
+            faces = face_cascade.detectMultiScale(gray, 1.3, 2)
+            choice = detectAndDisplay(frame, faces)
+            
+            # Cooldown para evitar mudanças muito rápidas
+            current_time = pygame.time.get_ticks()
+            if choice is not None and (current_time - last_choice_time) > 300:
+                last_choice_time = current_time
+                if activate==True:
+                    if choice == pygame.K_UP:
+                        selected = (selected - 1) % len(options)
+                    elif choice == pygame.K_DOWN:
+                        selected = (selected + 1) % len(options)
+                
+
 
 def draw_button(surface, text="Pular texto?", retangulo=skip_text_button, cor_fundo=GREEN):
     # Desenha o fundo do botão
@@ -171,16 +182,17 @@ def show_text_block(text,font=FONT,delay=9700):
                         return 
     clock.tick(FPS)                      
     
-    
-
 def events():
      events2=["Você vê um rosto marcado... Cicatrizes, peças expostas de matal, marcas de cirurgias, manchas de sangue e sérias deformações faciais e olheiras profundas... e um rosto que não parece humano, e nem totalmente desumano... Jrisk te encara, LUA PÁLIDA SORRI ABERTAMENTE... Não há caminhos: A LUA PÁLIDA SORRI ABERTAMENTE. O chão é macio. LUA PÁLIDA SORRI ABERTAMENTE. Jrisk, na forma da lua sorri abertamente para você...",
             "Você vê o que parece ser um carro e um prédio. O prédio derrete feito manteiga metálica na sua frente. A mesma coisa, o carro, e você sente um intenso e quase cegante brilho branco.... Ao longe, uma terrível conclusão sobre o final da batalha entre Prometeus, mutantes e humanos, paira no ar..."]
      return events2[r.randrange(len(events2))]
 
 #   INÍCIO DO JOGO
-from Quantunn_Gate.game_components.functions import Finald,ficar,sf,atencao,roubar,p2_4,créditos
+from pygame_functions.process_functs import Finald, investigar, ficar,sf,atencao,roubar,p2_4,créditos,begin
+
 show_text_block("Melhor jogar com fone de ouvido.",font=TITLE_FONT)
+show_text_block("Antes de começar, o sistema usado é o teclado. Cima/baixo para mover as opções, e enter para selecionar.",font=TITLE_FONT)
+show_text_block("O jogo, quando comecar, vai utilizar o sistema da biblioteca python OpenCV (controle via webcam). Mova a cabeça para esquerda/direita para alterar a opção, e use enter para selecionar a opção.",font=TITLE_FONT)
 show_text_block("Esta ainda é a Demo deste jogo!",font=TITLE_FONT)
 time.sleep(5)
 
@@ -195,27 +207,25 @@ escolha1=scene(f"{intro1}",[
 
 if escolha1=="créditos":
     game_theme.play(0)
-    for i in range(3):
+    for i in range(4):
         show_text_block(créditos(i))
 
 if escolha1=="iniciar":
-    credits_theme.play(-1)
+    credits_theme2.play(-1)
     show_text_block("Carregando...")
     time.sleep(5)
     show_text_block("                       'A menor distancia entre dois pontos curvos é uma reta geodésica.', Euclides de Alexandria        ",SUBTITLE_FONT)
     time.sleep(6)
     activate=True
     
-    show_text_block(f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra {player.vida}% de vida. ")
-    time.sleep(2)
-    show_text_block(f"Você se lembra um pouco, daquele lugar e de como você acabou indo parar aí... Você estava vagando sozinho e... Não consegue se lembrar mais do porque estar nesse lugar.")
-    show_text_block("Mas, sente um tipo de incômodo... Cheiro de comida velha...")
+    for i in range(4):
+        show_text_block(begin(i))
 
-    intro = (
+    decisao = (
         "Há um sistema de dutos de ventilação fazendo um barulho esquisito. Você não tem armas, ou celular. Muito menos um relógio. Há um violão na parede "
         "e dois caminhos: esquerda e direita.")
     
-    escolha = scene(f"{intro}", [
+    escolha = scene(f"{decisao}", [
         {"text": "Ir para esquerda", "action": "esquerda"},
         {"text": "Ir para direita", "action": "direita"}])
 
@@ -248,26 +258,37 @@ if escolha1=="iniciar":
         for i in range(3):
             show_text_block(ficar(i))
         player.dano(5)
-        die()
+        die()    
     elif escolha3 == "investigar":
-            investigar()
-            escolha4=scene(f"Está de noite, e no lado de fora, você lê: 'Prisão Blacksail, Since 2223. No caminho, você passa por uma televisão antiga. Nela, passam recortes de jornais e de documentários. A moto possui 56% de energia. Bastante, mas não suficiente para um trajeto maior que 60 Km. Então, decide se vai prestar atenção ou se vai roubar a energia para a moto.",[
+            for i in range():
+                show_text_block(investigar(i))
+                if i==3:
+                    player.dano(2)
+                elif i==5 or i==7:
+                    time.sleep(2)
+                if i==6:
+                    player.recuperar(1)
+                if i==0: 
+                    player.guardar_items("Espingarda Remington")
+                if i==1:
+                    player.guardar_items("Munição")       
+    escolha4=scene(f"Está de noite, e no lado de fora, você lê: 'Prisão Blacksail, Since 2223. No caminho, você passa por uma televisão antiga. Nela, passam recortes de jornais e de documentários. A moto possui 56% de energia. Bastante, mas não suficiente para um trajeto maior que 60 Km. Então, decide se vai prestar atenção ou se vai roubar a energia para a moto.",[
                 {"text": "Prestar atenção", "action": "atencao"},
                 {"text": "Roubar energia", "action": "roubar"}
-            ])
-            if escolha4 == "atencao":
+                ])
+    if escolha4 == "atencao":
                 player.recuperar()
                 for i in range(4):
                     show_text_block(atencao(i))
                 time.sleep(2)                    
-            else:
+    else:
                 for i in range (3):
                     show_text_block(roubar(i))
                 player.guardar_items("Lanterna")
                 show_text_block(f"Você a usa para iluminar o local e dorme com a {player.mostrar_items('Espingarda Remington')}, no chão.")
                 show_text_block("E, antes de dormir você se lembra de outras coisas que ocorreram no passado: ")
                 
-                show_text_block("Alguns anos atrás, surgiu a Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do acesso difícil, poucos tinham e o muitos não. Logo, disto iniciou-se uma guerra..."),
+                show_text_block("Alguns anos atrás, surgiu a Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do acesso difícil, poucos tinham e o muitos não. Aqueles que o tinham, se autobatizaram de Prometeus. Logo, disto iniciou-se uma guerra, entre os grupos..."),
                 time.sleep(5)
                 show_text_block("E com a guerra, veio a ascensão daqueles que vieram de falhas da tecnologia genética... Mutantes... E seu líder diabólico, Jrisk... ")
     player.recuperar()
@@ -302,7 +323,7 @@ if escolha1=="iniciar":
     for i in range(5):
      show_text_block(sf(i))
      time.sleep(2)
-     if sf(i)==sf(-3):
+     if sf(i)==sf(-1):
           player.guardar_items("Roupas Antigas"),
      if sf(i)==sf(-1):
           show_text_block(f"{year}")
