@@ -45,6 +45,7 @@ def créditos(i):
        "Renato- Roteiro, personagens, narrativa e código",
        "Gabriel, José e Davi- Código e Roteiro",
        "Trilha sonora: Synprez II",
+       "Riders On The Storm: Composição e arranjo - Jim Morrison / John Densmore / Ray Manzarek / Robby Krieger. 1971",
        "Jogo desenvolvido para a Forja-Cesar School"
     ] 
     return informacoes[i]

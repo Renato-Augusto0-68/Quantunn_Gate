@@ -24,8 +24,9 @@ TITLE_FONT = pygame.font.SysFont("Arial", 24, True)
 SUBTITLE_FONT = pygame.font.SysFont("Arial", 18,False,True)
 clock = pygame.time.Clock()
 FPS = 30
-version="1.7.0"
+version="1.7.5"
 activate=False
+control=False
 player = Personagem()
 
 # Botão de pular texto
@@ -120,11 +121,11 @@ def scene(text, options):
             elif event.type == pygame.KEYDOWN:
                   if event.key == pygame.K_RETURN:
                     return options[selected]['action']
-                  if activate==False:  
-                    if event.key == pygame.K_UP:
-                        selected = (selected - 1) % len(options)
-                    elif event.key == pygame.K_DOWN:
-                        selected = (selected + 1) % len(options)
+                  if control==False:  
+                        if event.key == pygame.K_UP:
+                            selected = (selected - 1) % len(options)
+                        elif event.key == pygame.K_DOWN:
+                            selected = (selected + 1) % len(options)
               
 
         ret, frame = cap.read()
@@ -141,6 +142,7 @@ def scene(text, options):
             if choice is not None and (current_time - last_choice_time) > 300:
                 last_choice_time = current_time
                 if activate==True:
+                   if control==True:
                     if choice == pygame.K_UP:
                         selected = (selected - 1) % len(options)
                     elif choice == pygame.K_DOWN:
@@ -191,10 +193,11 @@ def events():
 from pygame_functions.process_functs import Finald, investigar, ficar,sf,atencao,roubar,p2_4,créditos,begin
 
 show_text_block("Melhor jogar com fone de ouvido.",font=TITLE_FONT)
-show_text_block("Antes de começar, o sistema usado é o teclado. Cima/baixo para mover as opções, e enter para selecionar.",font=TITLE_FONT)
-show_text_block("O jogo, quando comecar, vai utilizar o sistema da biblioteca python OpenCV (controle via webcam). Mova a cabeça para esquerda/direita para alterar a opção, e use enter para selecionar a opção.",font=TITLE_FONT)
+show_text_block("O jogo pode ser jogado de 2 formas: Convencionalmente, o sistema usado é o teclado. Cima/baixo para mover as opções, e enter para selecionar.",font=TITLE_FONT)
+show_text_block("Também pode ser jogado, por meio da biblioteca python OpenCV (controle via webcam). Mova a cabeça para esquerda/direita para alterar a opção, e use enter para selecionar a opção.",font=TITLE_FONT)
+show_text_block("Escolha a forma de jogar que dê para você jogar (se não tem webcam, use o teclado).",font=TITLE_FONT)
 show_text_block("Esta ainda é a Demo deste jogo!",font=TITLE_FONT)
-time.sleep(5)
+time.sleep(2)
 
 intro1 = ("Quantunn Gate"
           "Bem vindo, ao futuro da raça humana"
@@ -207,16 +210,29 @@ escolha1=scene(f"{intro1}",[
 
 if escolha1=="créditos":
     game_theme.play(0)
-    for i in range(4):
+    for i in range(5):
         show_text_block(créditos(i))
 
+
 if escolha1=="iniciar":
+    
+    modo_jogo=scene(f"Você quer jogar via teclado, ou pela webcam?",[
+        {"text":"jogar com teclado","action":"teclado"},  
+        {"text":"jogar sem teclado","action":"opencv"}  
+    ])
+
+    if modo_jogo=="teclado":
+         control=False
+    if modo_jogo=="opencv":
+         control=True
+    
     credits_theme2.play(-1)
     show_text_block("Carregando...")
     time.sleep(5)
     show_text_block("                       'A menor distancia entre dois pontos curvos é uma reta geodésica.', Euclides de Alexandria        ",SUBTITLE_FONT)
     time.sleep(6)
     activate=True
+
     
     for i in range(4):
         show_text_block(begin(i))
