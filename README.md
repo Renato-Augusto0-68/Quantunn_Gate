@@ -3,8 +3,7 @@
 
 # Developed by: Invisible Label (Cesar School - Recife/PE)
 
-Quantunn Gate is a text-based sci-fi RPG that explores the intersection between immersive narrative, 70's stylized Text-RPG and computer vision technologies. The project was born from a collaboration of students (Invisible Label) from CESAR School to create an indie experience that revives retro-futuristic aesthetics with a modern implementation.
-Currently, the OpenCV feature is passing by technical difficulties. Work in progress
+Quantunn Gate is a text-based sci-fi RPG that explores the intersection between immersive narrative, 70's stylized Text-RPG and computer vision technologies. The project was born from a collaboration of students (Invisible Label) from CESAR School to create an indie experience that revives retro-futuristic aesthetics with a modern implementation. Currently, the OpenCV feature is passing by technical difficulties. Work in progress
 
 # How to Play the Game:
   ## To run the game (if using Windows/MacOS/Linux):
@@ -43,16 +42,16 @@ The history is being finished.
     Unlike simple text-based RPGs, Quantum Gate focuses on:
 
 ## Modular Architecture: 
-  Clear separation between the event engine and visual components (game_components);
+    Clear separation between the event engine and visual components (game_components);
 
 ## Computer Vision: 
-  Camera integration via OpenCV for control replacement;
+    Camera integration via OpenCV for control replacement;
 
 ## Non-Linear Narrative:
-  Decision tree system implemented via graph/state logic;
+    Decision tree system implemented via graph/state logic;
 
 ## Synth-based Soundtrack
 
 ## Cross-Platform Engineering: 
-  Developed and optimized to run seamlessly on both Windows and Linux/WSL.
+    Developed and optimized to run seamlessly on both Windows and Linux/WSL.
 =
