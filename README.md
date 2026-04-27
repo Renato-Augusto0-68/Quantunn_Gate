@@ -27,7 +27,7 @@ Quantunn Gate is a text-based sci-fi RPG that explores the intersection between 
 The game places the player in a sci-fi universe where decisions shape destiny. Developed to pay a homage to 70's text RPG's, but also using elements from modern games, with a soundtrack composed of synthesizers, and OpenCV as head-gesture control, for the choice selection.
 The history is being finished.
 
-🛠️ # Technologies Used
+# 🛠️ Technologies Used
 
 ## Python 3.13.2: 
   Base language due to its versatility and speed of prototyping.
@@ -38,7 +38,7 @@ The history is being finished.
 ## OpenCV: 
   Used for gesture control by webcam of the player (can be turned off, if there's no webcam to be used).
 
-🧠 # Technical Differentiators
+# 🧠 Technical Differentiators
     Unlike simple text-based RPGs, Quantum Gate focuses on:
 
 ## Modular Architecture: 
