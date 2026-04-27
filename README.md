@@ -7,7 +7,7 @@ Quantunn Gate is a text-based sci-fi RPG that explores the intersection between 
 
 # How to Play the Game:
   ## To run the game (if using Windows/MacOS/Linux):
-  ###(If Linux)
+  ### (If Linux)
       sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1
   ## clone this repository:
       git clone https://github.com/Renato-Augusto0-68/Quantunn_Gate.git
