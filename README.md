@@ -1,10 +1,45 @@
-# Quantunn_Gate
+#Quantunn Gate 🌌
+#Status: Actively in development 🛠️
 
-In this game, is used pygame and OpenCV.
-Still developing an version at other language. By now, still at python
+#Developed by: Invisible Label (Cesar School - Recife/PE)
 
+Quantunn Gate is a text-based sci-fi RPG that explores the intersection between immersive narrative, 70's stylized Text-RPG and computer vision technologies. The project was born from a collaboration of students (Invisible Label) from CESAR School to create an indie experience that revives retro-futuristic aesthetics with a modern implementation.
 
-Quantunn gate is an Text-style science ficction rpg game indie-developed by an group of students from Cesar_school in Recife-PE
+#?How to Play the Game:
+  ##To run the game (if using Windows/MacOS/Linux):
+      sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1 ( If Linux)
+  ##clone this repository:
+      git clone https://github.com/Renato-Augusto0-68/Quantunn_Gate.git
+      cd Quantunn_Gate ###(if Linux)    
+  ##Then, create an virtual enviroment( Venv), in the project's file:
+      python3 -m venv venv
+      source venv/bin/activate  ###(If Linux/MacOS)
+  ##Then, install all the requirements listed:
+      pip install -r requirements.txt
+  ##Last, run the game:
+      python main.py
+      cd Quantunn_Gate/game_components && python3 main.py  ###(If Linux) 
+🚀 #The Project
+The game places the player in a sci-fi universe where decisions shape destiny. Developed to pay a homage to 70's text RPG's, but also using elements from modern games, with a soundtrack composed of synthesizers, and OpenCV as head-gesture control, for the choice selection.
+The history is being finished.
 
-The group of developers call themselfs as
-Invisible Label
+🛠️ #Technologies Used
+Python 3.13.2: Base language due to its versatility and speed of prototyping.
+
+Pygame: Engine for interface rendering, state control, and audio.
+
+OpenCV: Used for gesture control by webcam of the player (can be turned off, if there's no webcam to be used).
+
+🧠 Technical Differentiators
+Unlike simple text-based RPGs, Quantum Gate focuses on:
+
+Modular Architecture: Clear separation between the event engine and visual components (game_components);
+
+Computer Vision: Camera integration via OpenCV for control replacement;
+
+Non-Linear Narrative: Decision tree system implemented via graph/state logic;
+
+Synth-based Soundtrack; 
+
+Cross-Platform Engineering: Developed and optimized to run seamlessly on both Windows and Linux/WSL.
+
