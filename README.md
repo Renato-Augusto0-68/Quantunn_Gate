@@ -50,7 +50,7 @@ The history is being finished.
 ## Non-Linear Narrative:
   Decision tree system implemented via graph/state logic;
 
-## Synth-based Soundtrack; 
+## Synth-based Soundtrack
 
 ## Cross-Platform Engineering: 
   Developed and optimized to run seamlessly on both Windows and Linux/WSL.
