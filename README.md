@@ -22,7 +22,7 @@ Quantunn Gate is a text-based sci-fi RPG that explores the intersection between 
   ## Last, run the game:
       python main.py
   ### (If Linux, do)
-      cd Quantunn_Gate/game_components && python3 main.py 
+      cd Quantunn_Gate/game_components/python_game && python3 main.py 
 # 🚀  The Project
 The game places the player in a sci-fi universe where decisions shape destiny. Developed to pay a homage to 70's text RPG's, but also using elements from modern games, with a soundtrack composed of synthesizers, and OpenCV as head-gesture control, for the choice selection.
 The history is being finished.
