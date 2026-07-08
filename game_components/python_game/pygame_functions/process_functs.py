@@ -4,16 +4,17 @@
 
 def len_of_function(init):
     i=0
-    while( (init(i)) != None):
+    try:
+        while(init(i) is not None): 
             i+=1
-    return i
-
+    except:
+        return i
+    
 def begin(i):
     p1=[f"Você acorda em um quarto escuro, com lâmpadas flourescentes azuis. Seu medidor biológico futurista mostra 100 % de vida.",
     f"Você se lembra um pouco, daquele lugar e de como você acabou indo parar aí... Você estava vagando sozinho e... Não consegue se lembrar mais do porque estar nesse lugar.",
     "Mas, sente um tipo de incômodo... Cheiro de comida velha..."]
     return p1[i]
-#print("%d", begin())
 def Finald(i=0):
     pf=[
         f"Fora de lá, você anda e encontra uma outra propaganda. Nela, está sendo dito sobre a criação da Crispr-CAS9. A notícia apenas diz sobre um estudo preeliminar acerda de uma possível técnica de alteração genética... ",
@@ -26,8 +27,8 @@ def Finald(i=0):
         "O que aparece na sua frente, parece ser um cachorro contaminado com raiva... Ele saliva abertamente, com uma fúria doentil e repleta de baba, condição típica da doença",
         f"Ele pula em você e quase te morde... Em seguida recua e arranha seu braço. Você sente uma dor intensa e uma febre alta ",
         "Você, apesar de se sentir mal, acaba tendo de atirar no cachorro e ele morre. Você sente uma febre alta e uma dor intensa no braço. Você tenta se acalmar, mas a febre só aumenta.",
-        "Você caminha,sem rumo, pelas ruas de São Paulo, quase tropeça numa boca de lobo, e sente bastante dor no pé."
-        ""
+        "Você caminha,sem rumo, pelas ruas de São Paulo, quase tropeça numa boca de lobo, e sente bastante dor no pé.",
+        "Mas você continua a andar sem parar"
     ]
     return pf[i]
 
@@ -104,5 +105,7 @@ def investigar(i):
             "atirar. Você acerta na cabeça do mutante, abatendo o ser na hora. Ao olhar o cadáver do ser, você percebe uma camada subcutânea espessa de queratina, que age como colete improvisado.",
             f"A moto possui um painel digital que mostra a energia restante, além da velocidade. Você sobe na moto e arromba uma porta de metal com a moto e sai voando. No caminho, você sente dor no ombro mordido pelo mutante.",
             "E, ao longo da longa estrada escura, de asfalto malfadado que você roda, o vento frio sopra e te deixa com frio",
+            "E, aquele    "
+
             ]
             return p3_2[i]

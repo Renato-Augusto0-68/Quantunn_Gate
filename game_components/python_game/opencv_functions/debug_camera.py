@@ -8,7 +8,7 @@ Rode este script e observe:
 """
 import cv2
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 # Verificar resolução real da câmera
 width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)

@@ -1,9 +1,11 @@
 from tkinter import font
 import pygame,sys,time
-import random as r;import cv2
+import random as r
+import cv2
+import os
 from opencv_functions.process_image import detectAndDisplay; 
 from pygame_functions.personagem import Personagem
-from pygame_functions.process_functs import Finald, investigar, ficar,sf,atencao,roubar,p2_4,créditos,begin
+from pygame_functions.process_functs import Finald, investigar, ficar,sf,atencao,roubar,p2_4,créditos,begin,len_of_function
 
 # --- CONFIG INICIAL ---
 pygame.init()
@@ -80,6 +82,7 @@ jogador=botao(year)
 viagem1=viagem(year)
 
 def show_ui():
+    
     if activate==True:
         vida_text = FONT.render(f"Vida: {player.vida}%", True, GREEN)
         itens_text = FONT.render(f"Itens: {player.mostrar_items()}", True, WHITE)
@@ -93,11 +96,34 @@ def show_ui():
     input_box = pygame.Rect(30, HEIGHT - 90, 300, 32)
     color_inactive = pygame.Color('lightskyblue3')
     color_active = pygame.Color('dodgerblue2')
-    
-inicial_theme=pygame.mixer.Sound('/home/devcontainers/dev/quantunn_gate/Quantunn_Gate/game_components/game_music/opening_theme.wav')
-credits_theme=pygame.mixer.Sound('/home/devcontainers/dev/quantunn_gate/Quantunn_Gate/game_components/game_music/credits_theme2.wav')
-game_theme=pygame.mixer.Sound('/home/devcontainers/dev/quantunn_gate/Quantunn_Gate/game_components/game_music/deff_theme.wav')
-game_channel=pygame.mixer.Channel(0)
+
+
+class _SilentChannel:
+    def play(self, *args, **kwargs):
+        return None
+
+    def stop(self):
+        return None
+
+try:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    print(f"{BASE_DIR}")
+    BASE_DIR = os.path.normpath(os.path.join(BASE_DIR,".."))
+
+    inicial_theme=os.path.join(BASE_DIR,"game_music", "opening_theme.wav")
+    credits_theme = os.path.join(BASE_DIR, "game_music", "credits_theme2.wav")
+    game_theme = os.path.join(BASE_DIR, "game_music", "deff_theme.wav")
+
+    inicial_theme1 = pygame.mixer.Sound(inicial_theme)
+    credits2_theme1 = pygame.mixer.Sound(credits_theme)
+    game_theme1 = pygame.mixer.Sound(game_theme)
+
+    game_channel = pygame.mixer.Channel(0)
+except pygame.error:
+    inicial_theme1 = None
+    credits_theme1 = None
+    game_theme1 = None
+    game_channel = _SilentChannel()
 
 def scene(text, options):
     choice = None
@@ -195,7 +221,7 @@ def events():
 
 #   INÍCIO DO JOGO
 
-game_channel.play(inicial_theme,loops=-1)
+game_channel.play(inicial_theme1,loops=-1)
 show_text_block("Melhor jogar com fone de ouvido.",font=TITLE_FONT)
 show_text_block("O jogo pode ser jogado de 2 formas: Convencionalmente, o sistema usado é o teclado. Cima/baixo para mover as opções, e enter para selecionar.",font=TITLE_FONT)
 show_text_block("Também pode ser jogado, por meio da biblioteca python OpenCV (controle via webcam). Mova a cabeça para esquerda/direita para alterar a opção, e use enter para selecionar a opção.",font=TITLE_FONT)
@@ -214,8 +240,8 @@ escolha1=scene(f"{intro1}",[
 
 if escolha1=="créditos":
     game_channel.stop()
-    game_channel.play(credits_theme,loops=-1)
-    for i in range(5):
+    game_channel.play(credits2_theme1,loops=-1)
+    for i in range(len_of_function(créditos)):
         show_text_block(créditos(i))
 
 
@@ -227,12 +253,12 @@ if escolha1=="iniciar":
     ])
 
     if modo_jogo=="teclado":
-         control=False
+        control=False
     if modo_jogo=="opencv":
          control=True
 
     game_channel.stop()
-    game_channel.play(game_theme,loops= -1)
+    game_channel.play(game_theme1,loops= -1)
     show_text_block("Carregando...")
     time.sleep(5)
     show_text_block("                       'A menor distancia entre dois pontos curvos é uma reta geodésica.', Euclides de Alexandria        ",SUBTITLE_FONT)
@@ -240,7 +266,7 @@ if escolha1=="iniciar":
     activate=True
 
     
-    for i in range(3):
+    for i in range(len_of_function(begin)):
         show_text_block(begin(i))
 
     decisao = (
@@ -261,7 +287,7 @@ if escolha1=="iniciar":
         [   {"text": "Pegar o violão", "action": "violao"},
             {"text": "Tentar arrombar a porta", "action": "arrombar"}])
     if escolha2 == "violao":
-        for i in range(3):
+        for i in range(len_of_function(p2_4)):
             show_text_block(p2_4(i))        
         player.guardar_items("violão")
     else:
@@ -277,12 +303,12 @@ if escolha1=="iniciar":
     {"text": "Investigar", "action": "investigar"}
     ])
     if escolha3=="ficar":
-        for i in range(3):
+        for i in range(len_of_function(ficar)):
             show_text_block(ficar(i))
         player.dano(5)
         die()    
     elif escolha3 == "investigar":
-            for i in range():
+            for i in range(len_of_function(investigar)):
                 show_text_block(investigar(i))
                 if i==3:
                     player.dano(2)
@@ -294,25 +320,25 @@ if escolha1=="iniciar":
                     player.guardar_items("Espingarda Remington")
                 if i==1:
                     player.guardar_items("Munição")       
-    escolha4=scene(f"Está de noite, e no lado de fora, você lê: 'Prisão Blacksail, Since 2223. No caminho, você passa por uma televisão antiga. Nela, passam recortes de jornais e de documentários. A moto possui 56% de energia. Bastante, mas não suficiente para um trajeto maior que 60 Km. Então, decide se vai prestar atenção ou se vai roubar a energia para a moto.",[
+    escolha4=scene(f"Está de noite, e no portão que você arrombou, está escrito: 'Prisão Blacksail, Since 2223. No caminho, você passa por uma televisão antiga. Nela, passam recortes de jornais e de documentários. A moto possui 56% de energia. Bastante, mas não suficiente para um trajeto maior que 60 Km. Então, decide se vai prestar atenção ou se vai roubar a energia para a moto.",[
                 {"text": "Prestar atenção", "action": "atencao"},
                 {"text": "Roubar energia", "action": "roubar"}
                 ])
     if escolha4 == "atencao":
                 player.recuperar()
-                for i in range(4):
+                for i in range(len_of_function(atencao)):
                     show_text_block(atencao(i))
-                time.sleep(2)                    
+                time.sleep(2)  
+                                  
     else:
-                for i in range (3):
+                for i in range (len_of_function(roubar)):
                     show_text_block(roubar(i))
                 player.guardar_items("Lanterna")
                 show_text_block(f"Você a usa para iluminar o local e dorme com a {player.mostrar_items('Espingarda Remington')}, no chão.")
                 show_text_block("E, antes de dormir você se lembra de outras coisas que ocorreram no passado: ")
-                
-                show_text_block("Alguns anos atrás, surgiu a Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do acesso difícil, poucos tinham e o muitos não. Aqueles que o tinham, se autobatizaram de Prometeus. Logo, disto iniciou-se uma guerra, entre os grupos..."),
-                time.sleep(5)
-                show_text_block("E com a guerra, veio a ascensão daqueles que vieram de falhas da tecnologia genética... Mutantes... E seu líder diabólico, Jrisk... ")
+    show_text_block("Alguns anos atrás, surgiu a Crispr-CAS19. Um sistema de melhoria genética... Mas, por causa do acesso difícil, poucos tinham e o muitos não. Aqueles que o tinham, se autobatizaram de Prometeus.  Mas o limite do que se poderia ou não, não existia muito bem… Então todo mundo queria sua parte. Logo, disto iniciou-se uma guerra, entre os grupos..."),
+    time.sleep(5)
+    show_text_block("E com a guerra, veio a ascensão daqueles que vieram de falhas da tecnologia genética... Mutantes... E seu líder diabólico, Jrisk... ")
     player.recuperar()
     pygame.display.set_caption("Quantunn Gate - Capítulo 2")
 
@@ -342,18 +368,17 @@ if escolha1=="iniciar":
     if year==2025 ^ year==2019:
         show_text_block(botao.viagem(year).saída)
 
-    for i in range(5):
+    for i in range(len_of_function(sf)):
      show_text_block(sf(i))
      time.sleep(2)
-     if sf(i)==sf(-1):
-          player.guardar_items("Roupas Antigas"),
-     if sf(i)==sf(-1):
+     if sf(-1):
+          player.guardar_items("Roupas Antigas")
           show_text_block(f"{year}")
 
     pygame.display.set_caption("Quantunn Gate - Capítulo 3")
     intro3 = ("Capítulo 3")
 
-    for i in range(12):
+    for i in range(len_of_function(Finald)):
         show_text_block(Finald(i))
         if Finald(i)==(Finald(-5) or Finald(-1)):
             time.sleep(2)
@@ -362,8 +387,5 @@ if escolha1=="iniciar":
             elif Finald(i)==(Finald(-1)):
                  die()
     
-    
-
-
 
 # CONTINUA AQUI — CAPÍTULO 3...
