@@ -110,11 +110,13 @@ try:
     print(f"{BASE_DIR}")
     BASE_DIR = os.path.normpath(os.path.join(BASE_DIR,".."))
 
-    inicial_theme=os.path.join(BASE_DIR,"game_music", "opening_theme.wav")
+    inicial_theme=os.path.join(BASE_DIR,"game_music", "Orquestra.WAV")
+    main_theme=os.path.join(BASE_DIR,"game_music","key solo.WAV")
     credits_theme = os.path.join(BASE_DIR, "game_music", "credits_theme2.wav")
     game_theme = os.path.join(BASE_DIR, "game_music", "deff_theme.wav")
 
     inicial_theme1 = pygame.mixer.Sound(inicial_theme)
+    main_theme=pygame.mixer.Sound(main_theme)
     credits2_theme1 = pygame.mixer.Sound(credits_theme)
     game_theme1 = pygame.mixer.Sound(game_theme)
 
@@ -246,7 +248,8 @@ if escolha1=="créditos":
 
 
 if escolha1=="iniciar":
-    
+    game_channel.stop()
+    game_channel.play(main_theme,loops=-1)
     modo_jogo=scene(f"Você quer jogar via teclado, ou pela webcam?",[
         {"text":"jogar com teclado","action":"teclado"},  
         {"text":"jogar sem teclado","action":"opencv"}  
