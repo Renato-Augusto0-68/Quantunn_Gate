@@ -1,7 +1,7 @@
 # Quantunn_Gate 🌌
   Status: Actively in development 🛠️
   
-  Possible release date: 07/29/2026
+  Possible release date: 07/29/2029
 
 # Developed by: Invisible Label (Cesar School - Recife/PE)
 
